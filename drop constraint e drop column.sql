@@ -1,0 +1,38 @@
+CREATE TABLE TB_CLIENTE 
+(
+	ClienteId INT IDENTITY(1, 1),
+	CONSTRAINT PK_CLIENTE_CLIENTEID PRIMARY KEY (ClienteId)
+);
+
+CREATE TABLE TB_ENDERECO
+(
+	EnderecoId INT IDENTITY(1, 1),
+	Logradouro VARCHAR(50),
+	Numero VARCHAR(20),
+	Bairro VARCHAR(35),
+	CEP VARCHAR(15),
+	ClienteId INT NULL,
+	CONSTRAINT PK_ENDERECO_EnderecoId PRIMARY KEY(EnderecoId),
+	CONSTRAINT FK_ENDERECO_CLIENTE_CLIENTEID FOREIGN KEY(ClienteId)
+	REFERENCES TB_CLIENTE(ClienteId)
+);
+
+ALTER TABLE TB_ENDERECO
+ADD CONSTRAINT FK_ENDERECO_CLIENTE_CLIENTEID FOREIGN KEY(ClienteId)
+REFERENCES TB_CLIENTE(ClienteId)
+
+-- exclusão de constraints
+ALTER TABLE TB_ENDERECO
+DROP CONSTRAINT FK_ENDERECO_CLIENTE_CLIENTEID
+
+
+-- adicionar colunas a tabelas existentes
+ALTER TABLE TB_ENDERECO
+ADD DataCriacao DATETIME2 NULL DEFAULT GETDATE()
+
+-- exclusão de colunas
+ALTER TABLE TB_ENDERECO
+DROP DataCriacao
+
+-- para excluir uma coluna que tem foreign key, primeiro exclua a constraint e depois a coluna
+
